@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bonnie Energy Station</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --ink: #4b2d1f;
+      --line: #653018;
+      --cream: #fff6e8;
+      --paper: #ecd5b9;
+      --brown: #bc6a31;
+      --brown-dark: #773717;
+      --brown-mid: #c47a3e;
+      --nose: #111;
+      --pink: #e4a077;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 22% 12%, rgba(255,255,255,.55), transparent 23%),
+        radial-gradient(circle at 86% 18%, rgba(255,221,179,.42), transparent 22%),
+        linear-gradient(135deg, #f4dfc7, #dfbea0 56%, #c99d7a);
+      color: var(--ink);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 18px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 92vh;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(255, 231, 207, .78), transparent 36%),
+        linear-gradient(180deg, rgba(255,246,232,.86), rgba(237,210,181,.82));
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 32px;
+      box-shadow: 0 28px 80px rgba(74, 42, 28, .25), inset 0 0 0 1px rgba(255,255,255,.25);
+      padding: 24px 18px 18px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .10;
+      background-image:
+        radial-gradient(#7b5135 .7px, transparent .7px),
+        radial-gradient(#fff .6px, transparent .6px);
+      background-size: 14px 14px, 19px 19px;
+      background-position: 0 0, 7px 10px;
+      mix-blend-mode: multiply;
+    }
+
+    .app.full-energy { box-shadow: 0 28px 86px rgba(152, 87, 38, .34); }
+
+    .doodle { position: absolute; pointer-events: none; color: #8b5d40; opacity: .45; font-weight: 900; z-index: 0; }
+    .d1 { left: 22px; top: 28px; font-size: 35px; transform: rotate(-18deg); }
+    .d2 { right: 28px; top: 34px; font-size: 30px; transform: rotate(14deg); }
+    .spark { position:absolute; width:5px; height:5px; border-radius:50%; background:#fff8c8; box-shadow:0 0 14px #fff2a6; opacity:.9; animation: twinkle 2.8s infinite ease-in-out; z-index:1; }
+    .s1{left:16%;top:33%;}.s2{left:29%;top:54%;animation-delay:.6s}.s3{right:25%;top:31%;animation-delay:1.2s}.s4{right:13%;top:50%;animation-delay:.3s}
+    @keyframes twinkle { 0%,100%{transform:scale(.6);opacity:.35} 50%{transform:scale(1.15);opacity:1} }
+
+    .title { font-size: 28px; font-weight: 900; margin: 8px 0 4px; position: relative; z-index: 2; }
+    .subtitle { font-size: 13px; opacity: 0.62; margin-bottom: 18px; font-weight: 750; letter-spacing: 1.4px; text-transform: lowercase; position: relative; z-index: 2; }
+
+    .energy-wrap {
+      margin: 12px auto 18px;
+      width: 88%;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 800;
+      position: relative;
+      z-index: 2;
+    }
+
+    .bar {
+      height: 14px;
+      background: rgba(150, 98, 60, .20);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+      box-shadow: inset 0 2px 3px rgba(81,45,25,.12);
+    }
+
+    .fill {
+      height: 100%;
+      width: 55%;
+      background: linear-gradient(90deg, #d97850, #f0ae6d);
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+    .fill.full { background: linear-gradient(90deg, #d97850, #ffd166, #9be7c1); }
+
+    .stage {
+      position: relative;
+      height: 355px;
+      display: flex;
+      justify-content: center;
+      align-items: end;
+      margin: 6px 0 14px;
+      z-index: 2;
+    }
+
+    .speech {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 88%;
+      min-height: 66px;
+      background: linear-gradient(180deg, #fff8ea, #ffeccf);
+      border: 3px solid #a87755;
+      border-radius: 28px;
+      padding: 13px 16px;
+      box-shadow: 0 12px 24px rgba(96, 58, 33, .18), inset 0 2px 0 rgba(255,255,255,.8);
+      font-size: 15px;
+      font-weight: 750;
+      line-height: 1.35;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: all .25s ease;
+      z-index: 20;
+    }
+    .speech::after {
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:-14px;
+      width:22px;
+      height:22px;
+      background:#ffeccf;
+      border-right:3px solid #a87755;
+      border-bottom:3px solid #a87755;
+      transform:translateX(-50%) rotate(45deg);
+      border-bottom-right-radius:5px;
+      z-index:-1;
+    }
+    .speech.hidden { opacity: 0; transform: translate(-50%, -8px); }
+
+    /* Bonnie head từ mockup v1, giữ app/caption của bản head-only */
+    .bonnie {
+      position: relative;
+      width: 335px;
+      height: 330px;
+      transform-origin: 50% 90%;
+      transform: scale(.82);
+      margin-bottom: -20px;
+      filter: drop-shadow(0 26px 23px rgba(82, 43, 25, .26));
+      animation: breathe 4.6s infinite ease-in-out;
+      cursor: pointer;
+      z-index: 4;
+    }
+    @keyframes breathe { 0%,100%{transform:scale(.82) translateY(0)} 50%{transform:scale(.82) translateY(-3px)} }
+    .bonnie.booped { animation: boing .50s cubic-bezier(.2,1.35,.4,1); }
+    @keyframes boing { 0%{transform:scale(.82)} 45%{transform:scale(.84) translateY(-8px)} 100%{transform:scale(.82)} }
+
+    .ear {
+      position: absolute;
+      top: 28px;
+      width: 98px;
+      height: 146px;
+      background:
+        radial-gradient(circle at 49% 48%, rgba(255,210,174,.75), transparent 38%),
+        linear-gradient(145deg, #b46432, #8c451f 70%);
+      border: 6px solid #653018;
+      z-index: 1;
+      overflow: hidden;
+      box-shadow: inset 8px 2px 18px rgba(255, 197, 137, .2), inset -10px -10px 14px rgba(53,22,10,.22);
+      transition: transform .35s ease, top .35s ease;
+      transform-origin: 50% 88%;
+    }
+    .ear::after {
+      content:"";
+      position:absolute;
+      inset: 15px 13px 18px;
+      background: linear-gradient(160deg, #e0a378, #9a5733 90%);
+      opacity: .78;
+      border-radius: inherit;
+      filter: blur(.2px);
+    }
+    .ear.left {
+      left: 27px;
+      border-radius: 78% 24% 38% 36% / 52% 28% 56% 48%;
+      transform: rotate(-38deg) skewY(-5deg);
+    }
+    .ear.right {
+      right: 27px;
+      border-radius: 24% 78% 36% 38% / 28% 52% 48% 56%;
+      transform: rotate(38deg) skewY(5deg);
+    }
+    .bonnie.study .ear.left {
+      top: 38px;
+      transform: rotate(-24deg) translateY(8px) scaleY(.91) skewY(6deg);
+    }
+    .bonnie.study .ear.right {
+      top: 38px;
+      transform: rotate(24deg) translateY(8px) scaleY(.91) skewY(-6deg);
+    }
+    .bonnie.wiggle .ear.left { animation: wiggleL .72s ease; }
+    .bonnie.wiggle .ear.right { animation: wiggleR .72s ease; }
+    @keyframes wiggleL {
+      0%,100% { transform: rotate(-38deg) skewY(-5deg); }
+      35% { transform: rotate(-26deg) translateY(4px) scaleY(.96) skewY(5deg); }
+      65% { transform: rotate(-33deg) translateY(2px) skewY(2deg); }
+    }
+    @keyframes wiggleR {
+      0%,100% { transform: rotate(38deg) skewY(5deg); }
+      35% { transform: rotate(26deg) translateY(4px) scaleY(.96) skewY(-5deg); }
+      65% { transform: rotate(33deg) translateY(2px) skewY(-2deg); }
+    }
+
+    .head {
+      position: absolute;
+      left: 72px;
+      top: 96px;
+      width: 192px;
+      height: 183px;
+      background:
+        radial-gradient(ellipse at 50% 22%, rgba(255,190,116,.28), transparent 28%),
+        radial-gradient(ellipse at 50% 62%, rgba(128,62,28,.28), transparent 44%),
+        linear-gradient(180deg, #bc6a31 0%, #985022 63%, #773717 100%);
+      border-radius: 42% 42% 47% 47% / 36% 36% 58% 58%;
+      border: 5px solid #643018;
+      box-shadow: inset 0 12px 18px rgba(255,198,139,.12), inset 0 -16px 20px rgba(58,24,10,.22);
+      z-index: 3;
+      overflow: hidden;
+    }
+    .head::before {
+      content:"";
+      position:absolute;
+      left:50%; top:-14px;
+      width:52px; height:118px;
+      transform:translateX(-50%);
+      background: linear-gradient(180deg, rgba(106,47,20,.38), rgba(106,47,20,.04));
+      border-radius: 0 0 60% 60%;
+      filter: blur(1px);
+    }
+    .head::after {
+      content:"";
+      position:absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,232,197,.33) .75px, transparent .9px), radial-gradient(rgba(58,24,10,.18) .65px, transparent .8px);
+      background-size: 7px 7px, 9px 9px;
+      opacity: .34;
+      mix-blend-mode: soft-light;
+    }
+
+    .cheek {
+      position:absolute;
+      width:52px; height:48px;
+      border-radius:50%;
+      background: radial-gradient(circle, rgba(255,186,130,.12), transparent 68%);
+      top: 197px;
+      z-index:4;
+    }
+    .cheek.left{left:82px}.cheek.right{right:82px}
+
+    .eye {
+      position:absolute;
+      width:36px;
+      height:42px;
+      top:160px;
+      background: radial-gradient(circle at 38% 26%, white 0 5px, transparent 6px), radial-gradient(circle at 67% 18%, rgba(255,255,255,.55) 0 3px, transparent 4px), #090908;
+      border: 4px solid #4d2415;
+      border-radius: 50%;
+      z-index:7;
+      box-shadow: 0 3px 4px rgba(55,22,10,.3);
+      transition: height .22s ease, top .22s ease, border-radius .22s ease, background .22s ease, transform .18s ease;
+    }
+    .eye.left{left:105px}.eye.right{right:105px}
+
+    .snout {
+      position:absolute;
+      left:50%; top:198px;
+      width:83px; height:80px;
+      transform:translateX(-50%);
+      z-index:6;
+      background: radial-gradient(ellipse at 50% 24%, #b96938, #87421f 70%, #653017 100%);
+      border-radius: 48% 48% 55% 55% / 44% 44% 62% 62%;
+      box-shadow: inset 0 9px 10px rgba(255,195,132,.12), inset 0 -13px 13px rgba(46,18,7,.24);
+    }
+    .nose {
+      position:absolute;
+      left:50%; top:218px;
+      width:48px; height:35px;
+      transform:translateX(-50%);
+      border-radius: 47% 47% 55% 55%;
+      background: radial-gradient(circle at 33% 25%, rgba(255,255,255,.42) 0 5px, transparent 7px), linear-gradient(180deg, #2a211f, #090706);
+      z-index:8;
+      box-shadow: 0 5px 6px rgba(48,20,10,.25), inset 0 -5px 3px rgba(0,0,0,.34);
+    }
+    .mouth {
+      position:absolute;
+      left:50%; top:249px;
+      width:34px; height:22px;
+      transform:translateX(-50%);
+      border-bottom: 3px solid rgba(34,18,12,.75);
+      border-radius: 0 0 999px 999px;
+      z-index:8;
+      transition: all .18s ease;
+    }
+    .mouth::before {
+      content:"";
+      position:absolute;
+      left:50%; top:-4px;
+      height:13px; width:2px;
+      background:rgba(34,18,12,.62);
+      transform:translateX(-50%);
+      border-radius:999px;
+    }
+
+    .whisker {
+      position:absolute;
+      height:1.5px;
+      width:47px;
+      background:rgba(42, 24, 15, .58);
+      z-index:8;
+      transform-origin: center;
+      border-radius:999px;
+    }
+    .wl1{ left:75px; top:230px; transform:rotate(10deg); }
+    .wl2{ left:78px; top:239px; transform:rotate(-9deg); }
+    .wl3{ left:84px; top:248px; transform:rotate(-22deg); opacity:.45; }
+    .wr1{ right:75px; top:230px; transform:rotate(-10deg); }
+    .wr2{ right:78px; top:239px; transform:rotate(9deg); }
+    .wr3{ right:84px; top:248px; transform:rotate(22deg); opacity:.45; }
+
+    .shadow {
+      position:absolute;
+      left: 69px;
+      right: 69px;
+      height: 30px;
+      bottom: 27px;
+      background: radial-gradient(ellipse, rgba(56,31,19,.36), transparent 72%);
+      filter: blur(8px);
+      z-index: 0;
+    }
+
+    .sleep-zzz {
+      position: absolute;
+      right: 48px;
+      top: 138px;
+      font-weight: 950;
+      font-size: 28px;
+      color: #3769a6;
+      opacity: 0;
+      z-index: 30;
+      pointer-events: none;
+    }
+    .bonnie.sleepy .sleep-zzz { animation: zzz 1.4s ease-out infinite; }
+    @keyframes zzz {
+      0% { opacity: 0; transform: translate(0, 8px) scale(.75); }
+      25% { opacity: 1; }
+      100% { opacity: 0; transform: translate(28px, -62px) scale(1.2); }
+    }
+
+    /* expressions mapped từ head-only */
+    .bonnie.sleepy .eye {
+      height: 9px;
+      top: 178px;
+      border-radius: 999px;
+      background: #111;
+      border: 0;
+      box-shadow: none;
+    }
+    .bonnie.sleepy .mouth { height: 14px; width: 24px; top:253px; opacity:.65; }
+    .bonnie.hungry .mouth {
+      height: 26px; width: 28px; background:#1d0d09; border-radius: 0 0 999px 999px; border:0; top:248px;
+    }
+    .bonnie.hungry .mouth::before { display:none; }
+    .bonnie.hungry .mouth::after { content:""; position:absolute; left:8px; bottom:2px; width:12px; height:7px; background:#df7b86; border-radius: 999px 999px 0 0; }
+    .bonnie.energy .eye { transform: scale(1.08); }
+    .bonnie.energy .mouth { width: 40px; opacity:.9; }
+    .bonnie.tap .head { animation: tilt .5s ease; }
+    @keyframes tilt { 0%,100% { transform: rotate(0deg); } 45% { transform: rotate(-5deg); } }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    button {
+      border: 2px solid rgba(255,255,255,.45);
+      border-radius: 18px;
+      padding: 14px 10px;
+      background: rgba(255,248,232,.78);
+      color: #4b2d1f;
+      font-weight: 850;
+      font-size: 14px;
+      box-shadow: 0 8px 0 rgba(120,80,50,.10), 0 10px 22px rgba(86,50,31,.12), inset 0 1px 0 rgba(255,255,255,.74);
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+    }
+    button:nth-child(1){background:#ffe6ae;}
+    button:nth-child(2){background:#ffd6c5;}
+    button:nth-child(3){background:#dfe9ff;}
+    button:nth-child(4){background:#dff0dc;}
+    button:focus { outline: none; }
+    button:focus-visible { box-shadow: 0 0 0 3px rgba(168, 119, 85, .45), 0 8px 18px rgba(90, 35, 45, 0.10); }
+    button:active { transform: translateY(4px); box-shadow: 0 3px 0 rgba(120,80,50,.10), 0 5px 13px rgba(86,50,31,.12); }
+
+    .footer { margin-top: 18px; font-size: 12px; opacity: 0.62; font-weight: 750; position: relative; z-index:2; }
+    .secret { margin-top: 12px; padding: 12px; border-radius: 18px; background: rgba(255,248,232,.76); font-size: 13px; font-weight: 750; display: none; position: relative; z-index:2; }
+    .secret.show { display: block; }
+
+    @media (max-width: 430px) {
+      body { padding: 0; align-items: stretch; }
+      .app { min-height: 100vh; border-radius: 0; }
+      .stage { height: 342px; }
+      .bonnie { transform: scale(.78); margin-bottom: -28px; }
+      @keyframes breathe { 0%,100%{transform:scale(.78) translateY(0)} 50%{transform:scale(.78) translateY(-3px)} }
+      @keyframes boing { 0%{transform:scale(.78)} 45%{transform:scale(.80) translateY(-8px)} 100%{transform:scale(.78)} }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="doodle d1">✦</div><div class="doodle d2">✦</div>
+    <span class="spark s1"></span><span class="spark s2"></span><span class="spark s3"></span><span class="spark s4"></span>
+
+    <div class="title">✦ Bonnie Energy Station ✦</div>
+    <div class="subtitle">exclusive for uyen chau</div>
+
+    <div class="energy-wrap">
+      Energy level: <span id="energyText">55%</span>
+      <div class="bar"><div class="fill" id="fill"></div></div>
+    </div>
+
+    <section class="stage">
+      <div class="speech" id="speech">Bonnie đang nhìn kiểu “ủa sao còn học nữa” 😭</div>
+
+      <div class="bonnie" id="bonnie" aria-label="Bonnie">
+        <div class="shadow"></div>
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+        <div class="head"></div>
+        <div class="cheek left"></div><div class="cheek right"></div>
+        <div class="eye left"></div><div class="eye right"></div>
+        <div class="snout"></div>
+        <div class="nose"></div>
+        <div class="mouth"></div>
+        <div class="whisker wl1"></div><div class="whisker wl2"></div><div class="whisker wl3"></div>
+        <div class="whisker wr1"></div><div class="whisker wr2"></div><div class="whisker wr3"></div>
+        <div class="sleep-zzz">Z</div>
+      </div>
+    </section>
+
+    <div class="buttons">
+      <button onclick="say('study')">📚 Học mệt</button>
+      <button onclick="say('hungry')">🍜 Em đói</button>
+      <button onclick="say('sleepy')">😴 Buồn ngủ</button>
+      <button onclick="say('energy')">🫀 Nạp năng lượng</button>
+    </div>
+
+    <div class="secret" id="secret"></div>
+    <div class="footer">
+      powered by Bonnie · maintained by Giang
+    </div>
+  </main>
+
+  <script>
+    const messages = {
+      study: [
+        "Em nghỉ xíu đi nhaaaa",
+        "Đổi tư thế đi nè ngồi nhiều đau lưng đoá",
+        "Hôm nay học nhiêu đó cũng giỏi rùiii",
+        "Đừng gắng sức quá nhó",
+        "Học nhìu quá cũng phải để ý sức khoẻ đó",
+        "Ra ngoài đi dạo xíu cho thoải mái nèe",
+        "Bonnie thấy chị chăm dữ luôn á 😤"
+      ],
+      hungry: [
+        "Ăn điiii. Bonnie nghiêm túc đóoo",
+        "Không được bỏ bữa đâuuu",
+        "Bonnie phát hiện có người chưa ăn",
+        "Đi ăn rồi học tiếp nha",
+        "Em kiếm gì ăn đi nha, đừng ăn linh tinh đâuu",
+        "Ăn nhiều lên mới có sức học chớ"
+      ],
+      sleepy: [
+        "Bonnie duyệt đơn ngủ 1 tiếng nhó",
+        "Mắt Bonnie còn díu nữa là mắt em 😴",
+        "Hôm nay vậy được rùiii mai học tiếppp",
+        "Em ngủ ngoan nha Bonnie cũng nhắm mắt nèe",
+        "G9 bác sĩ tương lai nhó",
+        "Cất ipad laptop đi nghỉ ngơi xíu nhaaa"
+      ],
+      energy: [
+        "Bonnie ở nhà nhớ chị lắm nè",
+        "Uống miếng nướccc",
+        "Em không có một mình đâuu",
+        "Cố lênnnnnn",
+        "Thi thoảng gặp ai đó tiếp năng lượng cho nha",
+        "Bonnie tặng chị 10 HP :)))"
+      ],
+      tap: [
+        "Gì zịii.",
+        "Bonnie đang nhìn lại.",
+        "Ủa gọi Bonnie hả.",
+        "Bấm nhẹ thôi, Bonnie còn đang lim dim.",
+        "Bonnie đang suy nghĩ rất mạnh.",
+        "Bonnie cũng không biết mình đang làm gì ở đây."
+      ]
+    };
+
+    let energy = 55;
+    let clicks = 0;
+    let fullEnergyShown = false;
+    let drainTimer;
+    let expressionTimer;
+    let wiggleTimer;
+
+    const speech = document.getElementById("speech");
+    const bonnie = document.getElementById("bonnie");
+    const fill = document.getElementById("fill");
+    const energyText = document.getElementById("energyText");
+    const secret = document.getElementById("secret");
+
+    function randomFrom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    function wiggleEars() {
+      if (bonnie.classList.contains("study")) return;
+      bonnie.classList.add("wiggle");
+      setTimeout(() => bonnie.classList.remove("wiggle"), 800);
+    }
+
+    function setExpression(type) {
+      clearTimeout(expressionTimer);
+      bonnie.classList.remove("study", "hungry", "sleepy", "energy", "tap", "booped", "wiggle");
+      void bonnie.offsetWidth;
+      bonnie.classList.add("booped", type);
+      if (type === "sleepy") wiggleEars();
+      expressionTimer = setTimeout(() => {
+        bonnie.classList.remove("study", "hungry", "energy", "tap", "booped");
+        if (type !== "sleepy") bonnie.classList.remove("sleepy");
+      }, type === "sleepy" ? 4200 : 1800);
+    }
+
+    function updateEnergy(amount) {
+      const wasFull = energy >= 100;
+      energy = Math.max(0, Math.min(100, energy + amount));
+      fill.style.width = energy + "%";
+      energyText.textContent = energy + "%";
+      fill.classList.toggle("full", energy >= 100);
+      document.querySelector(".app").classList.toggle("full-energy", energy >= 100);
+
+      if (energy >= 100 && !wasFull && !fullEnergyShown) {
+        fullEnergyShown = true;
+        setExpression("energy");
+        showMessage("Bonnie đầy pin rùiii. Cười cái coi 😤");
+      }
+
+      if (energy < 100) fullEnergyShown = false;
+    }
+
+    function showMessage(text) {
+      speech.classList.add("hidden");
+      setTimeout(() => {
+        speech.textContent = text;
+        speech.classList.remove("hidden");
+      }, 150);
+    }
+
+    function say(type) {
+      setExpression(type);
+      showMessage(randomFrom(messages[type]));
+      updateEnergy(type === "energy" ? 2 : 1);
+      scheduleEnergyDrain();
+    }
+
+    bonnie.addEventListener("click", () => {
+      clicks++;
+      setExpression("tap");
+      showMessage(randomFrom(messages.tap));
+      updateEnergy(1);
+      scheduleEnergyDrain();
+
+      if (clicks === 10) {
+        secret.textContent = "Bonnie thấy hình như em đang rảnh đúng khum";
+        secret.classList.add("show");
+      }
+      if (clicks === 20) {
+        secret.textContent = "App này hay khôm em đoán xem ai đó dev mất bao lâu nèe";
+        secret.classList.add("show");
+      }
+      if (clicks === 30) {
+        secret.textContent = "Bonnie là tệp đính kèm thui nhaaaa";
+        secret.classList.add("show");
+      }
+      if (clicks === 50) {
+        secret.textContent = "Em là người đặc biệt của anh. Anh tin em làm được mờ ❤️";
+        secret.classList.add("show");
+      }
+    });
+
+    function scheduleEnergyDrain() {
+      clearTimeout(drainTimer);
+      drainTimer = setTimeout(() => {
+        updateEnergy(-1);
+        scheduleEnergyDrain();
+      }, 5000);
+    }
+
+    updateEnergy(0);
+    scheduleEnergyDrain();
+    wiggleTimer = setInterval(wiggleEars, 15000);
+  </script>
+</body>
+</html>
