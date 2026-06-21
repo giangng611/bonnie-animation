@@ -65,6 +65,159 @@
 
     .app.full-energy { box-shadow: 0 28px 86px rgba(152, 87, 38, .34); }
 
+    .gate {
+      position: absolute;
+      inset: 0;
+      z-index: 60;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(255, 242, 220, .92), transparent 38%),
+        linear-gradient(180deg, rgba(255,246,232,.96), rgba(237,210,181,.94));
+      transition: opacity .7s ease, transform .7s ease, visibility .7s ease;
+    }
+
+    .gate.hidden {
+      opacity: 0;
+      transform: scale(1.02);
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .code-card {
+      width: min(100%, 310px);
+      padding: 22px 18px 18px;
+      border: 1px solid rgba(255,255,255,.72);
+      border-radius: 24px;
+      background: rgba(255, 248, 232, .82);
+      box-shadow: 0 22px 48px rgba(88, 49, 29, .20), inset 0 1px 0 rgba(255,255,255,.78);
+      position: relative;
+      z-index: 2;
+    }
+
+    .code-title {
+      margin: 0 0 6px;
+      font-size: 22px;
+      font-weight: 950;
+    }
+
+    .code-hint {
+      margin: 0 0 16px;
+      font-size: 13px;
+      font-weight: 750;
+      opacity: .62;
+    }
+
+    .code-form {
+      display: grid;
+      gap: 10px;
+    }
+
+    .code-input {
+      width: 100%;
+      border: 2px solid rgba(101,48,24,.18);
+      border-radius: 16px;
+      padding: 13px 14px;
+      background: rgba(255,255,255,.74);
+      color: var(--ink);
+      font: inherit;
+      font-size: 16px;
+      font-weight: 850;
+      text-align: center;
+      letter-spacing: 1.8px;
+      box-shadow: inset 0 2px 8px rgba(81,45,25,.08);
+    }
+
+    .code-input:focus {
+      outline: none;
+      border-color: rgba(168, 119, 85, .68);
+      box-shadow: 0 0 0 4px rgba(168, 119, 85, .18), inset 0 2px 8px rgba(81,45,25,.08);
+    }
+
+    .code-error {
+      min-height: 18px;
+      margin: 0;
+      color: #9d2f21;
+      font-size: 12px;
+      font-weight: 850;
+      opacity: 0;
+      transition: opacity .2s ease;
+    }
+
+    .code-card.error {
+      animation: shake .34s ease;
+    }
+
+    .code-card.error .code-error {
+      opacity: 1;
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      55% { transform: translateX(5px); }
+      80% { transform: translateX(-2px); }
+    }
+
+    .app-content {
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+    }
+
+    .app.unlocked .app-content {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      transition: opacity 1.15s ease .18s, transform 1.15s ease .18s;
+    }
+
+    .app.unlocked .title,
+    .app.unlocked .subtitle,
+    .app.unlocked .energy-wrap,
+    .app.unlocked .footer {
+      animation: softReveal .95s ease both;
+    }
+
+    .app.unlocked .subtitle { animation-delay: .16s; }
+    .app.unlocked .energy-wrap { animation-delay: .28s; }
+    .app.unlocked .speech { animation: speechReveal .95s ease .42s both; }
+    .app.unlocked .footer { animation-delay: .82s; }
+
+    .app.unlocked .bonnie {
+      animation: bonniePop .72s cubic-bezier(.18, 1.35, .34, 1) .42s both, breathe 4.6s infinite ease-in-out 1.14s;
+    }
+
+    .app.unlocked .buttons button {
+      animation: buttonPop .58s cubic-bezier(.18, 1.25, .34, 1) both;
+    }
+    .app.unlocked .buttons button:nth-child(1) { animation-delay: .72s; }
+    .app.unlocked .buttons button:nth-child(2) { animation-delay: .82s; }
+    .app.unlocked .buttons button:nth-child(3) { animation-delay: .92s; }
+    .app.unlocked .buttons button:nth-child(4) { animation-delay: 1.02s; }
+
+    @keyframes softReveal {
+      from { opacity: 0; filter: blur(8px); transform: translateY(10px); }
+      to { opacity: 1; filter: blur(0); transform: translateY(0); }
+    }
+
+    @keyframes speechReveal {
+      from { opacity: 0; filter: blur(8px); transform: translate(-50%, 10px); }
+      to { opacity: 1; filter: blur(0); transform: translate(-50%, 0); }
+    }
+
+    @keyframes bonniePop {
+      0% { opacity: 0; transform: scale(.36) translateY(110px); }
+      62% { opacity: 1; transform: scale(.88) translateY(-10px); }
+      100% { opacity: 1; transform: scale(.82) translateY(0); }
+    }
+
+    @keyframes buttonPop {
+      from { opacity: 0; transform: scale(.72) translateY(18px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
     .doodle { position: absolute; pointer-events: none; color: #8b5d40; opacity: .45; font-weight: 900; z-index: 0; }
     .d1 { left: 22px; top: 28px; font-size: 35px; transform: rotate(-18deg); }
     .d2 { right: 28px; top: 34px; font-size: 30px; transform: rotate(14deg); }
@@ -428,56 +581,81 @@
       .bonnie { transform: scale(.78); margin-bottom: -28px; }
       @keyframes breathe { 0%,100%{transform:scale(.78) translateY(0)} 50%{transform:scale(.78) translateY(-3px)} }
       @keyframes boing { 0%{transform:scale(.78)} 45%{transform:scale(.80) translateY(-8px)} 100%{transform:scale(.78)} }
+      @keyframes bonniePop {
+        0% { opacity: 0; transform: scale(.32) translateY(110px); }
+        62% { opacity: 1; transform: scale(.84) translateY(-10px); }
+        100% { opacity: 1; transform: scale(.78) translateY(0); }
+      }
     }
   </style>
 </head>
 <body>
   <main class="app">
-    <div class="doodle d1">✦</div><div class="doodle d2">✦</div>
-    <span class="spark s1"></span><span class="spark s2"></span><span class="spark s3"></span><span class="spark s4"></span>
-
-    <div class="title">✦ Bonnie Energy Station ✦</div>
-    <div class="subtitle">exclusive for uyen chau</div>
-
-    <div class="energy-wrap">
-      Energy level: <span id="energyText">55%</span>
-      <div class="bar"><div class="fill" id="fill"></div></div>
-    </div>
-
-    <section class="stage">
-      <div class="speech" id="speech">Bonnie đang nhìn kiểu “ủa sao còn học nữa” 😭</div>
-
-      <div class="bonnie" id="bonnie" aria-label="Bonnie">
-        <div class="shadow"></div>
-        <div class="ear left"></div>
-        <div class="ear right"></div>
-        <div class="head"></div>
-        <div class="cheek left"></div><div class="cheek right"></div>
-        <div class="eye left"></div><div class="eye right"></div>
-        <div class="snout"></div>
-        <div class="nose"></div>
-        <div class="mouth"></div>
-        <div class="whisker wl1"></div><div class="whisker wl2"></div><div class="whisker wl3"></div>
-        <div class="whisker wr1"></div><div class="whisker wr2"></div><div class="whisker wr3"></div>
-        <div class="sleep-zzz">Z</div>
+    <section class="gate" id="gate" aria-label="Nhập code để mở app">
+      <div class="code-card" id="codeCard">
+        <h1 class="code-title">Nhập code</h1>
+        <p class="code-hint">Bonnie chỉ mở cho đúng người thui</p>
+        <form class="code-form" id="codeForm">
+          <input class="code-input" id="codeInput" type="password" autocomplete="off" inputmode="text" aria-label="Code mở app" />
+          <button type="submit">Mở Bonnie</button>
+          <p class="code-error" id="codeError">Code chưa đúng rùi</p>
+        </form>
       </div>
     </section>
 
-    <div class="buttons">
-      <button onclick="say('study')">📚 Học mệt</button>
-      <button onclick="say('hungry')">🍜 Em đói</button>
-      <button onclick="say('sleepy')">😴 Buồn ngủ</button>
-      <button onclick="say('energy')">🫀 Nạp năng lượng</button>
-    </div>
+    <div class="app-content" id="appContent" aria-hidden="true" inert>
+      <div class="doodle d1">✦</div><div class="doodle d2">✦</div>
+      <span class="spark s1"></span><span class="spark s2"></span><span class="spark s3"></span><span class="spark s4"></span>
 
-    <div class="secret" id="secret"></div>
-    <div class="footer">
-      powered by Bonnie · maintained by Giang
+      <div class="title">✦ Bonnie Energy Station ✦</div>
+      <div class="subtitle">exclusive for uyen chau</div>
+
+      <div class="energy-wrap">
+        Energy level: <span id="energyText">55%</span>
+        <div class="bar"><div class="fill" id="fill"></div></div>
+      </div>
+
+      <section class="stage">
+        <div class="speech" id="speech">Hellooo nhớ bonnie rùi à</div>
+
+        <div class="bonnie" id="bonnie" aria-label="Bonnie">
+          <div class="shadow"></div>
+          <div class="ear left"></div>
+          <div class="ear right"></div>
+          <div class="head"></div>
+          <div class="cheek left"></div><div class="cheek right"></div>
+          <div class="eye left"></div><div class="eye right"></div>
+          <div class="snout"></div>
+          <div class="nose"></div>
+          <div class="mouth"></div>
+          <div class="whisker wl1"></div><div class="whisker wl2"></div><div class="whisker wl3"></div>
+          <div class="whisker wr1"></div><div class="whisker wr2"></div><div class="whisker wr3"></div>
+          <div class="sleep-zzz">Z</div>
+        </div>
+      </section>
+
+      <div class="buttons">
+        <button onclick="say('study')">📚 Học mệt</button>
+        <button onclick="say('hungry')">🍜 Em đói</button>
+        <button onclick="say('sleepy')">😴 Buồn ngủ</button>
+        <button onclick="say('energy')">🫀 Nạp năng lượng</button>
+      </div>
+
+      <div class="secret" id="secret"></div>
+      <div class="footer">
+        powered by Bonnie · maintained by Giang
+      </div>
     </div>
   </main>
 
   <script>
     const messages = {
+      initial: [
+        "Hellooo nhớ bonnie rùi à",
+        "Chào mừng ai đó quay lại nèe",
+        "Hê luu",
+        "Em đang làm gì đóo"
+      ],
       study: [
         "Em nghỉ xíu đi nhaaaa",
         "Đổi tư thế đi nè ngồi nhiều đau lưng đoá",
@@ -533,6 +711,13 @@
     const fill = document.getElementById("fill");
     const energyText = document.getElementById("energyText");
     const secret = document.getElementById("secret");
+    const app = document.querySelector(".app");
+    const gate = document.getElementById("gate");
+    const appContent = document.getElementById("appContent");
+    const codeForm = document.getElementById("codeForm");
+    const codeInput = document.getElementById("codeInput");
+    const codeCard = document.getElementById("codeCard");
+    const unlockCode = "uyenchau";
 
     function randomFrom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
@@ -619,9 +804,33 @@
       }, 5000);
     }
 
+    function unlockApp() {
+      speech.textContent = randomFrom(messages.initial);
+      gate.classList.add("hidden");
+      app.classList.add("unlocked");
+      appContent.setAttribute("aria-hidden", "false");
+      appContent.removeAttribute("inert");
+      updateEnergy(0);
+      scheduleEnergyDrain();
+      wiggleTimer = setInterval(wiggleEars, 15000);
+      setTimeout(wiggleEars, 1250);
+    }
+
+    codeForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (codeInput.value.trim() === unlockCode) {
+        unlockApp();
+        return;
+      }
+
+      codeCard.classList.remove("error");
+      void codeCard.offsetWidth;
+      codeCard.classList.add("error");
+      codeInput.select();
+    });
+
+    codeInput.focus();
     updateEnergy(0);
-    scheduleEnergyDrain();
-    wiggleTimer = setInterval(wiggleEars, 15000);
   </script>
 </body>
 </html>
