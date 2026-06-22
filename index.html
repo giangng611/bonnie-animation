@@ -356,12 +356,12 @@
       transform: rotate(38deg) skewY(5deg);
     }
     .bonnie.study .ear.left {
-      top: 38px;
-      transform: rotate(-24deg) translateY(8px) scaleY(.91) skewY(6deg);
+      top: 62px;
+      transform: rotate(10deg) translate(28px, 8px) scaleY(.82) skewY(7deg);
     }
     .bonnie.study .ear.right {
-      top: 38px;
-      transform: rotate(24deg) translateY(8px) scaleY(.91) skewY(-6deg);
+      top: 62px;
+      transform: rotate(-10deg) translate(-28px, 8px) scaleY(.82) skewY(-7deg);
     }
     .bonnie.wiggle .ear.left { animation: wiggleL .72s ease; }
     .bonnie.wiggle .ear.right { animation: wiggleR .72s ease; }
@@ -475,6 +475,22 @@
       transform:translateX(-50%);
       border-radius:999px;
     }
+    .tongue {
+      position: absolute;
+      left: 50%;
+      top: 270px;
+      width: 20px;
+      height: 18px;
+      transform: translateX(-50%) scaleY(0);
+      transform-origin: 50% 0;
+      background: linear-gradient(180deg, #ff9aa8, #df6f82);
+      border: 2px solid rgba(92, 33, 28, .34);
+      border-top: 0;
+      border-radius: 0 0 999px 999px;
+      opacity: 0;
+      z-index: 7;
+      transition: opacity .18s ease, transform .2s ease;
+    }
 
     .whisker {
       position:absolute;
@@ -531,6 +547,18 @@
       box-shadow: none;
     }
     .bonnie.sleepy .mouth { height: 14px; width: 24px; top:253px; opacity:.65; }
+    .bonnie.study .eye {
+      height: 28px;
+      top: 170px;
+      border-radius: 44% 44% 58% 58%;
+      background:
+        radial-gradient(circle at 38% 24%, white 0 4px, transparent 5px),
+        radial-gradient(circle at 67% 18%, rgba(255,255,255,.45) 0 2px, transparent 3px),
+        #090908;
+      opacity: .9;
+    }
+    .bonnie.study .eye.left { transform: rotate(8deg) scaleY(.82); }
+    .bonnie.study .eye.right { transform: rotate(-8deg) scaleY(.82); }
     .bonnie.hungry .mouth {
       height: 26px; width: 28px; background:#1d0d09; border-radius: 0 0 999px 999px; border:0; top:248px;
     }
@@ -540,6 +568,95 @@
     .bonnie.energy .mouth { width: 40px; opacity:.9; }
     .bonnie.tap .head { animation: tilt .5s ease; }
     @keyframes tilt { 0%,100% { transform: rotate(0deg); } 45% { transform: rotate(-5deg); } }
+    .bonnie.idle-smile .mouth { width: 46px; opacity: 1; }
+    .bonnie.idle-whisker .whisker { animation: whiskerDrift .9s ease; }
+    @keyframes whiskerDrift {
+      0%,100% { margin-top: 0; }
+      45% { margin-top: -4px; }
+      70% { margin-top: 3px; }
+    }
+    .bonnie.idle-yawn .eye {
+      height: 11px;
+      top: 177px;
+      border-radius: 999px;
+      background: #111;
+      border: 0;
+      box-shadow: none;
+    }
+    .bonnie.idle-yawn .mouth {
+      width: 32px;
+      height: 34px;
+      top: 243px;
+      background:#1d0d09;
+      border: 0;
+      border-radius: 50%;
+      opacity: 1;
+    }
+    .bonnie.idle-yawn .mouth::before { display: none; }
+    .bonnie.idle-silly .eye.left { transform: rotate(-10deg) scale(1.16); }
+    .bonnie.idle-silly .eye.right { transform: rotate(8deg) scale(.78); }
+    .bonnie.idle-silly .mouth { transform: translateX(-50%) rotate(-7deg); width: 42px; }
+    .bonnie.super-energy .ear.left { transform: rotate(-50deg) translateY(-7px) skewY(-7deg); }
+    .bonnie.super-energy .ear.right { transform: rotate(50deg) translateY(-7px) skewY(7deg); }
+    .bonnie.super-energy .eye { transform: scale(1.16); }
+    .bonnie.super-energy .mouth {
+      width: 44px;
+      height: 26px;
+      top: 246px;
+      background:#1d0d09;
+      border: 0;
+      opacity: 1;
+    }
+    .bonnie.super-energy .mouth::before { display: none; }
+    .bonnie.super-energy .mouth::after { display: none; }
+    .bonnie.super-energy .tongue {
+      opacity: 1;
+      transform: translateX(-50%) scaleY(1);
+    }
+    .bonnie.super-energy .head {
+      box-shadow:
+        inset 0 12px 18px rgba(255,198,139,.16),
+        inset 0 -16px 20px rgba(58,24,10,.20),
+        0 0 28px rgba(255, 210, 112, .38);
+    }
+
+    .full-burst {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 35;
+    }
+
+    .burst-dot {
+      position: absolute;
+      left: 50%;
+      top: 47%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ffd166;
+      opacity: 0;
+      animation: burst 1.15s ease-out forwards;
+    }
+    .burst-dot:nth-child(2n) { background: #9be7c1; }
+    .burst-dot:nth-child(3n) { background: #ffd6c5; }
+    .burst-dot:nth-child(4n) { background: #dfe9ff; }
+    .burst-dot:nth-child(1) { --x: -118px; --y: -128px; animation-delay: .02s; }
+    .burst-dot:nth-child(2) { --x: -70px; --y: -154px; animation-delay: .08s; }
+    .burst-dot:nth-child(3) { --x: 8px; --y: -168px; animation-delay: .04s; }
+    .burst-dot:nth-child(4) { --x: 88px; --y: -140px; animation-delay: .10s; }
+    .burst-dot:nth-child(5) { --x: 126px; --y: -72px; animation-delay: .01s; }
+    .burst-dot:nth-child(6) { --x: 112px; --y: 14px; animation-delay: .07s; }
+    .burst-dot:nth-child(7) { --x: 56px; --y: 84px; animation-delay: .12s; }
+    .burst-dot:nth-child(8) { --x: -38px; --y: 86px; animation-delay: .03s; }
+    .burst-dot:nth-child(9) { --x: -112px; --y: 36px; animation-delay: .09s; }
+    .burst-dot:nth-child(10) { --x: -136px; --y: -48px; animation-delay: .05s; }
+
+    @keyframes burst {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.35); }
+      18% { opacity: 1; }
+      100% { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.2); }
+    }
 
     .buttons {
       display: grid;
@@ -628,6 +745,7 @@
           <div class="snout"></div>
           <div class="nose"></div>
           <div class="mouth"></div>
+          <div class="tongue"></div>
           <div class="whisker wl1"></div><div class="whisker wl2"></div><div class="whisker wl3"></div>
           <div class="whisker wr1"></div><div class="whisker wr2"></div><div class="whisker wr3"></div>
           <div class="sleep-zzz">Z</div>
@@ -651,27 +769,61 @@
   <script>
     const messages = {
       initial: [
-        "Hellooo nhớ bonnie rùi à",
-        "Chào mừng ai đó quay lại nèe",
-        "Hê luu",
-        "Em đang làm gì đóo"
+        "Hellooo nhớ Bonnie rùi à",
+        "Hê luuuu",
+        "Bonnie vừa đi ngang qua nè",
+        "Hôm nay sao rùiii",
+        "Em đang làm gì đóoo",
+        "Bonnie ghé thăm một xíu nè",
+        "Lại học nữa hảaa",
+        "Bonnie check-in cái coi 👀",
+        "Ai đó mở app rồi nè",
+        "Bonnie có mặttt",
+        "Ủa nhớ Bonnie hả",
+        "Bonnie vừa ngủ dậy luôn á",
+        "Nay ổn hônggg",
+        "Lại đây Bonnie nhìn cái coi"
       ],
       study: [
-        "Em nghỉ xíu đi nhaaaa",
+        "Em nghỉ xíu đi nhaaaa 📚",
         "Đổi tư thế đi nè ngồi nhiều đau lưng đoá",
         "Hôm nay học nhiêu đó cũng giỏi rùiii",
         "Đừng gắng sức quá nhó",
         "Học nhìu quá cũng phải để ý sức khoẻ đó",
-        "Ra ngoài đi dạo xíu cho thoải mái nèe",
-        "Bonnie thấy chị chăm dữ luôn á 😤"
+        "Ra ngoài đi dạo xíu cho thoải mái nèe 🌿",
+        "Bonnie thấy chị chăm dữ luôn á 😤",
+        "Nghỉ 5 phút đi nha, học tiếp sau cũng đượcc",
+        "Bonnie thấy não em đang load đó",
+        "Học giỏi rồiii, giờ uống nước cái đã 💧",
+        "Đừng ép bản thân quá nhaa",
+        "Ngồi thẳng lại xíu nè, lưng em đang kêu kìa",
+        "Chia nhỏ bài ra nha, đừng ôm hết một lần",
+        "Đừng để bị quá tải nha",
+        "Nhìn mặt là biết mệt rùiii",
+        "Đừng học tới mức nhìn Bonnie thành con mèo nha",
+        "Thôi nghỉ xíu rồi học tiếp nè",
+        "Bonnie thấy em cố dữ lắm luôn á",
+        "Không cần học hết hôm nay đâu nha"
       ],
       hungry: [
-        "Ăn điiii. Bonnie nghiêm túc đóoo",
+        "Ăn điiii Bonnie nghiêm túc đóoo 🍜",
         "Không được bỏ bữa đâuuu",
         "Bonnie phát hiện có người chưa ăn",
         "Đi ăn rồi học tiếp nha",
         "Em kiếm gì ăn đi nha, đừng ăn linh tinh đâuu",
-        "Ăn nhiều lên mới có sức học chớ"
+        "Ăn nhiều lên mới có sức học chớ",
+        "Ăn điiii, Bonnie nghiêm túc đó",
+        "Không được bỏ bữa đâu nha",
+        "Có người cần cơm gấp nè 🍚",
+        "Đi ăn rồi quay lại học tiếp cũng chưa muộn đâuu",
+        "Bonnie nghe bụng em kêu đóo",
+        "Ăn món gì ấm ấm đi nha",
+        "Kiếm gì tử tế ăn nha, đừng ăn linh tinh quá",
+        "Ăn xong rồi học tiếp nhaaa",
+        "Cơm đâu cơm đâu",
+        "Bonnie hỏi thiệt là em ăn chưa",
+        "Đi kiếm gì ăn nhaaa",
+        "Không ăn là Bonnie méc mẹ đó"
       ],
       sleepy: [
         "Bonnie duyệt đơn ngủ 1 tiếng nhó",
@@ -679,23 +831,112 @@
         "Hôm nay vậy được rùiii mai học tiếppp",
         "Em ngủ ngoan nha Bonnie cũng nhắm mắt nèe",
         "G9 bác sĩ tương lai nhó",
-        "Cất ipad laptop đi nghỉ ngơi xíu nhaaa"
+        "Cất ipad laptop đi nghỉ ngơi xíu nhaaa 🌙",
+        "Ngủ xíu đi, Bonnie canh app cho",
+        "Mắt em díu lại rồi kìa",
+        "Hôm nay vậy là đủ rùii",
+        "Cất laptop/iPad đi nhaaa",
+        "Ngủ ngoan, mai mình tính tiếp",
+        "Bonnie duyệt cho chị nghỉ ngơi nè",
+        "Nằm xuống 20 phút cũng được á",
+        "Não cần nạp năng lượng rồi em ới",
+        "G9 bác sĩ tương lai nha",
+        "Buồn ngủ thì ngủ nhaaa",
+        "Ngáp mấy cái rồi đúng khum",
+        "Bonnie nhìn là biết em sắp ngủ rồi á",
+        "Mai học tiếp cũng được màaa",
+        "Ngủ ngoan nha bác sĩ tương lai"
       ],
       energy: [
         "Bonnie ở nhà nhớ chị lắm nè",
-        "Uống miếng nướccc",
+        "Uống miếng nướccc 💧",
         "Em không có một mình đâuu",
         "Cố lênnnnnn",
         "Thi thoảng gặp ai đó tiếp năng lượng cho nha",
-        "Bonnie tặng chị 10 HP :)))"
+        "Bonnie tặng em 10 HP",
+        "Uống nước đi rồi Bonnie cộng điểm",
+        "Cố lênnn, Bonnie ở đây nè",
+        "Hít thở chậm lại một xíu nhaa",
+        "Ai đó giỏi lắm rồi đóa",
+        "Bonnie truyền năng lượng qua màn hình nèe ✨",
+        "Một ngày khó nhưng em vẫn đang làm được roàii",
+        "Nhìn Bonnie 3 giây rồi cười nhẹ nhaaa",
+        "Bonnie qua xem chị ổn hông nè",
+        "Uống miếng nước đi đãaa 💧",
+        "Thuiii đừng căng quá nha",
+        "Bonnie ngồi đây một xíu với em nè",
+        "Em làm tốt hơn em nghĩ đó",
+        "Có người vẫn luôn cổ vũ em đóoo"
       ],
+      full: [
+        "Anh biết em vất vả, nhưng anh vẫn luôn tin em làm đượccc ✨",
+        "Bonnie full pin rồi, còn em thì được phép nghỉ một xíu nhaaaa 🔋",
+        "Có những ngày chỉ cần cố thêm chút thôi cũng đã đáng khen rùiii 🌷",
+        "100% rồi nè, nhận một cái ôm tinh thần nhó 🤍",
+        "Hôm nay em đã cố gắng đủ nhiều rồi đóa ⭐",
+        "Dù chậm một chút cũng được, miễn là em vẫn phải giữ sức khoẻ nhaa 💛",
+        "Nạp đầy rồi nèee",
+        "Bonnie vui dữ luôn á",
+        "Hôm nay vậy là giỏi lắm rồi đóo",
+        "100% rồi nhaaa"
+      ],
+      milestones: {
+        10: [
+          "Bonnie thấy hình như em đang rảnh đúng khum",
+          "Mười cái chạm rồi đó, Bonnie ghi sổ nha",
+          "Có người đang test độ chịu đựng của Bonnie nè",
+          "Bonnie bị gọi dậy hơi nhiều rồi áa",
+          "Mười lần là đủ để Bonnie chú ý rồi đóo",
+          "Tay em nhanh hơn Bonnie load đó",
+          "Ủa bấm nữa hả 😭",
+          "Bonnie bắt đầu để ý rồi đó",
+          "Mười lần rồi luôn áaa",
+          "Bonnie đang bị gọi liên tục nè"
+        ],
+        20: [
+          "App này hay khôm",
+          "Hai mươi lần rồi, Bonnie hơi chóng mặt nhẹ nha",
+          "Bonnie xác nhận em rất kiên trì nhaa",
+          "Em bấm nữa là Bonnie phải làm trò đó",
+          "Có người đang xem bí mật đằng sau đúng khônggg",
+          "Vẫn chưa chán luôn hảaa"
+        ],
+        30: [
+          "Bonnie là tệp đính kèm thui nhaaaa",
+          "Secret hunter!!!",
+          "Bonnie nghĩ em đang rất tò mò đó",
+          "Có người kiên nhẫn hơn Bonnie tưởng",
+          "Tìm dữ vậy trời",
+          "Bonnie hết biết giấu ở đâu luôn á",
+          "Có người tò mò ghêee"
+        ],
+        50: [
+          "Em là người đặc biệt của anh, anh tin em làm được mờ ❤️",
+          "Bonnie chính thức cảm động",
+          "Bonnie biết em cố nhiều lắm đó",
+          "Nếu hôm nay khó quá thì mình đi chậm lại nhaa",
+          "Hôm nay khó quá thì mình nghỉ xíu nha",
+          "Có người luôn đứng về phía em đó"
+        ],
+        100: [
+          "Một trăm lần luôn á 😭",
+          "Bonnie chịu thua độ lì của em rồi",
+          "Em đúng là chuyên gia săn secret",
+          "Nãy giờ vẫn còn bấm luôn hả",
+          "Bonnie phục em thật á",
+          "Được rồi, em thắng 😤",
+          "Một trăm lần rồi, nghỉ tay uống nước đi nè 💧"
+        ],
+        200: [
+          "Secret cuối cùng: Bonnie rất vui vì em đã quan tâm nha ❤️"
+        ]
+      },
       tap: [
-        "Gì zịii.",
-        "Bonnie đang nhìn lại.",
-        "Ủa gọi Bonnie hả.",
-        "Bấm nhẹ thôi, Bonnie còn đang lim dim.",
-        "Bonnie đang suy nghĩ rất mạnh.",
-        "Bonnie cũng không biết mình đang làm gì ở đây."
+        "Gì zịii",
+        "Bonnie đang nhìn lại",
+        "Ủa gọi Bonnie hả",
+        "Bấm nhẹ thui, Bonnie còn đang lim dim",
+        "Ơ đây là đâu zậy"
       ]
     };
 
@@ -705,6 +946,10 @@
     let drainTimer;
     let expressionTimer;
     let wiggleTimer;
+    let idleTimer;
+    let idleClearTimer;
+    let secretTimer;
+    let fullHoldUntil = 0;
 
     const speech = document.getElementById("speech");
     const bonnie = document.getElementById("bonnie");
@@ -729,6 +974,7 @@
 
     function setExpression(type) {
       clearTimeout(expressionTimer);
+      clearIdleMood();
       bonnie.classList.remove("study", "hungry", "sleepy", "energy", "tap", "booped", "wiggle");
       void bonnie.offsetWidth;
       bonnie.classList.add("booped", type);
@@ -740,20 +986,35 @@
     }
 
     function updateEnergy(amount) {
-      const wasFull = energy >= 100;
       energy = Math.max(0, Math.min(100, energy + amount));
       fill.style.width = energy + "%";
       energyText.textContent = energy + "%";
       fill.classList.toggle("full", energy >= 100);
       document.querySelector(".app").classList.toggle("full-energy", energy >= 100);
-
-      if (energy >= 100 && !wasFull && !fullEnergyShown) {
-        fullEnergyShown = true;
-        setExpression("energy");
-        showMessage("Bonnie đầy pin rùiii. Cười cái coi 😤");
-      }
+      bonnie.classList.toggle("super-energy", energy >= 100);
 
       if (energy < 100) fullEnergyShown = false;
+    }
+
+    function rewardFullEnergy() {
+      if (energy < 100) return;
+      fullHoldUntil = Date.now() + 15000;
+      celebrateFullEnergy();
+
+      if (!fullEnergyShown) {
+        fullEnergyShown = true;
+        showSecret(randomFrom(messages.full));
+      }
+    }
+
+    function showSecret(text) {
+      clearTimeout(secretTimer);
+      secret.textContent = text;
+      secret.classList.add("show");
+      secretTimer = setTimeout(() => {
+        secret.classList.remove("show");
+        secret.textContent = "";
+      }, 10000);
     }
 
     function showMessage(text) {
@@ -768,6 +1029,7 @@
       setExpression(type);
       showMessage(randomFrom(messages[type]));
       updateEnergy(type === "energy" ? 2 : 1);
+      rewardFullEnergy();
       scheduleEnergyDrain();
     }
 
@@ -776,32 +1038,54 @@
       setExpression("tap");
       showMessage(randomFrom(messages.tap));
       updateEnergy(1);
+      rewardFullEnergy();
       scheduleEnergyDrain();
 
-      if (clicks === 10) {
-        secret.textContent = "Bonnie thấy hình như em đang rảnh đúng khum";
-        secret.classList.add("show");
-      }
-      if (clicks === 20) {
-        secret.textContent = "App này hay khôm em đoán xem ai đó dev mất bao lâu nèe";
-        secret.classList.add("show");
-      }
-      if (clicks === 30) {
-        secret.textContent = "Bonnie là tệp đính kèm thui nhaaaa";
-        secret.classList.add("show");
-      }
-      if (clicks === 50) {
-        secret.textContent = "Em là người đặc biệt của anh. Anh tin em làm được mờ ❤️";
-        secret.classList.add("show");
-      }
+      if (messages.milestones[clicks]) showSecret(randomFrom(messages.milestones[clicks]));
     });
 
     function scheduleEnergyDrain() {
       clearTimeout(drainTimer);
       drainTimer = setTimeout(() => {
+        if (energy >= 100 && Date.now() < fullHoldUntil) {
+          scheduleEnergyDrain();
+          return;
+        }
         updateEnergy(-1);
         scheduleEnergyDrain();
       }, 5000);
+    }
+
+    function celebrateFullEnergy() {
+      const burst = document.createElement("div");
+      burst.className = "full-burst";
+      burst.innerHTML = Array.from({ length: 10 }, () => '<span class="burst-dot"></span>').join("");
+      app.appendChild(burst);
+      bonnie.classList.add("wiggle");
+      setTimeout(() => bonnie.classList.remove("wiggle"), 900);
+      setTimeout(() => burst.remove(), 1400);
+    }
+
+    function clearIdleMood() {
+      clearTimeout(idleClearTimer);
+      bonnie.classList.remove("idle-smile", "idle-whisker", "idle-yawn", "idle-silly");
+    }
+
+    function playIdleMood() {
+      if (!app.classList.contains("unlocked")) return;
+      if (bonnie.classList.contains("study") || bonnie.classList.contains("hungry") || bonnie.classList.contains("sleepy") || bonnie.classList.contains("energy") || bonnie.classList.contains("tap") || bonnie.classList.contains("super-energy")) return;
+
+      clearIdleMood();
+      const mood = randomFrom(["idle-smile", "wiggle", "idle-whisker", "idle-yawn", "idle-silly"]);
+      bonnie.classList.add(mood);
+      idleClearTimer = setTimeout(() => {
+        bonnie.classList.remove(mood);
+      }, mood === "idle-yawn" ? 1600 : 1100);
+    }
+
+    function startIdleMoods() {
+      clearInterval(idleTimer);
+      idleTimer = setInterval(playIdleMood, 6500);
     }
 
     function unlockApp() {
@@ -813,6 +1097,7 @@
       updateEnergy(0);
       scheduleEnergyDrain();
       wiggleTimer = setInterval(wiggleEars, 15000);
+      startIdleMoods();
       setTimeout(wiggleEars, 1250);
     }
 
